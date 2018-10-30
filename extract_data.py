@@ -25,7 +25,7 @@ def from_dir(dir):
         separation_point = len(arr)/3
         testing_data.append(arr[:separation_point])
         distribution_data.append(arr[separation_point:])
-
+        
     return labels,   numpy.ndarray(testing_data), numpy.ndarray(distribution_data)
 
 if __name__ == "__main__":
