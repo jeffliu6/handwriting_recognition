@@ -18,8 +18,9 @@ def grab_imgs(dir, n):
         total_array[ind,:,:] = img
         ind += 1
 
+    # split data into test, validation, and training sets, based on parameters in constants file
     split_location = int(size * TEST_SPLIT)
-    return total_array[:split_location,:,:], labels_vector[:split_location], total_array[split_location:,:,:], labels_vector[split_location:]
+    return total_array[split_location:,:,:], labels_vector[split_location:], total_array[:split_location,:,:], labels_vector[:split_location]
 
 
 # Iterate through dir indexing data relating to the desired labels
@@ -41,22 +42,15 @@ def from_dir(dir):
                 training_labels = np.append(training_labels, new_train_labels)
                 test_data = np.append(test_data, new_test_matrix, axis=0)
                 test_labels = np.append(test_labels, new_test_labels)
+                print("{} completed with {} in training and {} in test".format(dirs, len(training_labels), len(test_labels)))
 
-    # split data into test, validation, and training sets, based on parameters in constants file
-    print(test_data.shape)
-    print(test_labels.shape)
 
-    # for ind in complete_data:
-    #     arr = complete_data[ind]
-    #     test_separation_point = int(len(arr) * TEST_SPLIT)
-    #     val_separation_point = int(len(arr) * (TEST_SPLIT))
-    #     test_data[ind] = arr[:test_separation_point]
-    #     validation_data[ind] = arr[test_separation_point:val_separation_point]
-    #     train_data[ind] = arr[val_separation_point:]
-    #
-    # return labels, test_data, validation_data, train_data
-    # return labels, numpy.ndarray(test_data), numpy.ndarray(validation_data), numpy.ndarray(train_data)
-    return None, None, None, None
+    return training_data, training_labels, test_data, test_labels
+
 
 if __name__ == "__main__":
-    labels, test, val, train = from_dir(PATH_TO_IMAGES)
+    training_data, training_labels, test_data, test_labels = from_dir(PATH_TO_IMAGES)
+    np.save(PATH_TO_SAVED + "training_data", training_data)
+    np.save(PATH_TO_SAVED + "training_labels", training_labels)
+    np.save(PATH_TO_SAVED + "test_data", test_data)
+    np.save(PATH_TO_SAVED + "test_labels", test_labels)
