@@ -1,3 +1,2 @@
 PATH_TO_IMAGES = "./extracted_images/"
-TEST_SPLIT = 0.2
-VALIDATION_SPLIT = 0.2
+TEST_SPLIT = 0.3
