@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#directories to ignore
+saved_data/
+
 # C extensions
 *.so
 
