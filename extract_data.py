@@ -8,17 +8,15 @@ import cv2
 # Iterate through images in dir, converting them to 45x45 pixel arrays
 # dir is the path to the folder, n is the #/character the folder represents
 def grab_imgs(dir, n):
-    max_examples = 2000
-    size = min(max_examples, len(listdir(dir)))
+    size = len(listdir(dir))
     total_array = np.zeros((size, 45, 45))
-    labels_vector = np.zeros((size, 1))
-    labels_vector.fill(n)
-    for ind, f in enumerate(listdir(dir)):
-        if ind >= max_examples:
-            break
+    labels_vector = np.full((size, 1), n)
+
+    ind = 0
+    for f in listdir(dir):
         img = cv2.imread(join(dir, f), flags=cv2.IMREAD_GRAYSCALE)
         total_array[ind,:,:] = img
-
+        ind += 1
 
     # split data into test, validation, and training sets, based on parameters in constants file
     split_location = int(size * TEST_SPLIT)
@@ -39,7 +37,7 @@ def from_dir(dir):
         chars_dir = [f for f in listdir(dir) if not f.startswith('.')]# if isdir(join(dir, f))]
         for dirs in chars_dir:
             if dirs in labels:
-                new_train_matrix, new_train_labels, new_test_matrix, new_test_labels = grab_imgs(join(dir, dirs), labels[dirs])
+                new_train_matrix, new_train_labels, new_test_matrix, new_test_labels = grab_imgs(join(dir, dirs), dirs)
                 training_data = np.append(training_data, new_train_matrix, axis=0)
                 training_labels = np.append(training_labels, new_train_labels)
                 test_data = np.append(test_data, new_test_matrix, axis=0)
