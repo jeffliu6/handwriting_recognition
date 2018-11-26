@@ -2,8 +2,7 @@ import cv2
 import numpy as np
 
 
-def horizontal_dilation(path):
-    img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+def horizontal_dilation(img):
     r, c = img.shape
     parts = []
     for i in range(c):
