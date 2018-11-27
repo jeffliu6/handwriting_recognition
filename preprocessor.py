@@ -3,7 +3,7 @@ import cv2
 
 """
 [horizontal_dilation(img)] is the numpy matrix representation of an image [img] with the white space between characters
-scaled by a factor of four. 
+scaled by a factor of four.
 """
 def horizontal_dilation(img):
     r, c = img.shape
@@ -11,7 +11,7 @@ def horizontal_dilation(img):
     for i in range(c):
         pixel_vals = img[:,i]
         parts.append(pixel_vals)
-        if max(pixel_vals) < 50 or  np.sum(pixel_vals >200)<1 : 
+        if max(pixel_vals) < 50 or  np.sum(pixel_vals >200)<1 :
                 parts.append(pixel_vals)
                 parts.append(pixel_vals)
                 parts.append(pixel_vals)
@@ -39,18 +39,18 @@ def shadow_removal (img):
     return img
 
 """
-[process_image(file)] preprocesses the image at path [file] to be classified. 
+[process_image(file)] preprocesses the image at path [file] to be classified.
 """
 def process_image (file):
     img = cv2.imread(file,0)
-    img = cv2.resize(img, (1240,331)) 
+    img = cv2.resize(img, (1240,331))
     img = shadow_removal (img)
     # Add blur
     cv2.GaussianBlur(img,(5,5),0)
 
     #reduces quality to simplify contourws
     kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (40,40))
-    
+
     #Grayscale
     _,img = cv2.threshold(img,200,255,cv2.THRESH_BINARY)
     img = cv2.bitwise_not(img,img)
@@ -60,14 +60,14 @@ def process_image (file):
     img = horizontal_dilation (img)
     img = np.ascontiguousarray(img, dtype=np.uint8)
 
-    #The dilated img copy is utilized for contours, we save the undilated version 
+    #The dilated img copy is utilized for contours, we save the undilated version
     undilated_image = img
 
-    #Enlarge text 
+    #Enlarge text
     img_dilated = cv2.dilate(img, kernel, iterations=1)
     img_dilated = cv2.erode(img_dilated,cv2.getStructuringElement(cv2.MORPH_CROSS, (2,2)))
 
-    #Flip to white writing with black background 
+    #Flip to white writing with black background
     img = cv2.bitwise_not(img_dilated,img_dilated)
     img = cv2.bitwise_not(img)
 
@@ -79,13 +79,14 @@ def process_image (file):
     (contours, boundingBoxes) = zip(*sorted(zip(contours, boundingBoxes), key=lambda b:b[1][0], reverse=False))
     characters = []
 
-    #Img saved should be black text, so we inverse colors for array to be saved 
+    #Img saved should be black text, so we inverse colors for array to be saved
     undilated_image = cv2.bitwise_not(undilated_image,undilated_image)
 
     # Draw contours
 
-    for contour in contours:
-        
+    characters = np.zeros((len(contours),45,45,1))
+    for i, contour in enumerate(contours):
+
         [x,y,w,h] = cv2.boundingRect(contour)
 
         #Significant contours only
@@ -93,9 +94,9 @@ def process_image (file):
             cv2.rectangle(img_dilated,(x,y),(x+w,y+h),(100,100,100),1)
             if np.sum(undilated_image[y:y+h,x:x+w] >100) > 3000:
                 cropped = undilated_image[y:y+h,x:x+w]
-                characters.append(cropped)  
-
-    # DEBUG: 
+                cropped = cv2.resize(cropped, (45, 45)).reshape(45,45,1)
+                characters[i, :, :] = cropped
+    # DEBUG:
     # Uncomment to show the full equation and the first 6 characters spliced
     # cv2.imshow('Full Equation',undilated_image)
     # cv2.imshow('equation0',characters[0])
