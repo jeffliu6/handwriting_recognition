@@ -29,9 +29,7 @@ def from_dir(dir):
     training_labels = np.empty((0,1), int)
     test_data = np.empty((0, 45, 45), int)
     test_labels = np.empty((0,1), int)
-    labels = {"0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9,
-              "+": 10, "-": 11, "times": 12, "div": 13, "forward_slash": 13, "=": 14}
-
+  
     # iterate through each sub-directory
     if isdir(dir):
         chars_dir = [f for f in listdir(dir) if not f.startswith('.')]# if isdir(join(dir, f))]

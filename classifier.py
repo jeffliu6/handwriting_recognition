@@ -9,6 +9,8 @@ from keras.models import model_from_json
 import numpy as np
 import os
 import matplotlib.pyplot as plt
+from constants import LABELS
+
 """
 [classify(img)] is a string representation of the numpy array representation of an image of handwritting [img]
 """
@@ -21,5 +23,13 @@ def classify(img):
     model.load_weights("model.h5")
     model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=keras.optimizers.Adadelta(),
-              metrics=['accuracy'])
-    return model.predict_classes(img)
+              metrics=['accuracy'])   
+    ret_str = ""
+    for m in model.predict_classes(img): 
+        c = LABELS[m]
+        if c == "div" or c == "forward_slash":
+            c =  "/"
+        elif c == "times":
+            c = "*"  
+        ret_str += str(c)
+    return ret_str

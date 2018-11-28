@@ -9,7 +9,7 @@ VERSION 1: Static Image Analysis
 - Single image path and analysis
 """
 if __name__ == "__main__":
-    exit_regex = re.compile(r"exit{1}|quit{1}|(no{1})|n{1}|done{1}", "gixu")
+    exit_regex = re.compile(r"exit{1}|quit{1}|(no{1})|n{1}|done{1}", re.IGNORECASE)
     print("Handwriting Recognition and Translation.\n")
     while(1):
         path = input("Enter the path to the desired writing sample:\n")

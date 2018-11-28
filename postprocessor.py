@@ -1,5 +1,6 @@
 import math
 import sympy
+import pprint
 
 """[evalResult(string_rep)] is the string result of the mathematical evaluation of [string_rep].
 Returns None on an invalid or malformed [string_rep]. """
@@ -25,9 +26,11 @@ def postProcess(string_rep):
     try: 
         expr_result = str(eval(string_rep))
         latex_rep = sympy.latex(string_rep + "=" + str(expr_result))
-        printf("Result: %s\nLatex Representation: %s\n", expr_result, latex_rep)
+        print("Result: %s\nLatex Representation: %s\n" % (expr_result, latex_rep))
         return True
-    except: 
+    except Exception as e: 
+        print("Exception in Postprocessing:")
+        print(e)
         return False
     
    
