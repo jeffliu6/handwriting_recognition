@@ -3,6 +3,7 @@ import os
 import preprocessor
 import classifier
 import postprocessor
+import sys
 
 """
 VERSION 1: Static Image Analysis
