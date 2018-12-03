@@ -36,11 +36,9 @@ def toLatex(string_rep):
     t = 0
     while t < len(tokens):
         if tokens[t] == "/":
-            # latex_rep = latex_rep[:(len(latex_rep)-len(tokens[t-1]))] + (r"\frac{"+tokens[t-1]+"}{"+tokens[t+1]+"}")
             latex_rep = r"\frac{"+latex_rep+"}{"+tokens[t+1]+"}"
             t += 2
         elif tokens[t] == "|":
-            # latex_rep = latex_rep[:(len(latex_rep)-len(tokens[t-1]))] + ("\div{"+tokens[t-1]+"}{"+tokens[t+1]+"}")
            latex_rep = "\div{"+latex_rep+"}{"+tokens[t+1]+"}"
            t += 2
         elif tokens[t] == "*":
@@ -93,5 +91,5 @@ if __name__ == "__main__":
     # postProcess("5|5=1")
     # postProcess("5/5=1")
     # postProcess("1+2")
-    postProcess("2*2/8")
+    postProcess("20/0")
     postProcess("2*2|8")
