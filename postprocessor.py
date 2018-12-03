@@ -1,17 +1,21 @@
 import math
 import constants
 import pprint
+import __future__
 
 """[evalResult(string_rep)] is the string result of the mathematical evaluation of [string_rep].
 Returns None on an invalid or malformed [string_rep]. """
 def evalResult(string_rep): 
+    def evaluate(e):
+        return eval(compile(e, '<string>', 'eval', __future__.division.compiler_flag))
     try: 
+        string_rep = string_rep.replace("|","/")
         if "=" in string_rep: 
             string_rep = string_rep.split("=")
-            left = eval(string_rep[0])
-            right = eval(string_rep[1])
+            left = evaluate(string_rep[0])
+            right = evaluate(string_rep[1])
             return left == right
-        return eval(string_rep)
+        return evaluate(string_rep)
     except: 
         return None
 
@@ -32,8 +36,16 @@ def toLatex(string_rep):
     t = 0
     while t < len(tokens):
         if tokens[t] == "/":
-            latex_rep = latex_rep[:(len(latex_rep)-len(tokens[t-1]))] + ("\div{"+tokens[t-1]+"}{"+tokens[t+1]+"}")
+            # latex_rep = latex_rep[:(len(latex_rep)-len(tokens[t-1]))] + (r"\frac{"+tokens[t-1]+"}{"+tokens[t+1]+"}")
+            latex_rep = r"\frac{"+latex_rep+"}{"+tokens[t+1]+"}"
             t += 2
+        elif tokens[t] == "|":
+            # latex_rep = latex_rep[:(len(latex_rep)-len(tokens[t-1]))] + ("\div{"+tokens[t-1]+"}{"+tokens[t+1]+"}")
+           latex_rep = "\div{"+latex_rep+"}{"+tokens[t+1]+"}"
+           t += 2
+        elif tokens[t] == "*":
+            latex_rep += "\cdot"
+            t += 1
         else:
             latex_rep += tokens[t]
             t += 1
@@ -66,17 +78,20 @@ def postProcess(string_rep):
         print(e)
         return False
     
-# if __name__ == "__main__":
-#     print(toLatex("5+5"))
-#     print(toLatex("5/5"))
-#     print(toLatex("5*5"))
-#     print(toLatex("5/5=5*5")+"\n")
+if __name__ == "__main__":
+    # print(toLatex("5+5"))
+    # print(toLatex("5/5"))
+    # print(toLatex("5*5"))
+    # print(toLatex("5/5=5*5")+"\n")
 
-#     print(buildLatex("5/5=5*5", "False"))
-#     print(buildLatex("10=10", "True"))
-#     print(buildLatex("5/5=1", "True")+"\n")
-
-#     postProcess("5/5=5*5")
-#     postProcess("10=10")
-#     postProcess("5/5=1")
-#     postProcess("1+2")
+    # print(buildLatex("5/5=5*5", "False"))
+    # print(buildLatex("10=10", "True"))
+    # print(buildLatex("5/5=1", "True")+"\n")
+    # postProcess("5|5=5*5")
+    # postProcess("5/5=5*5")
+    # postProcess("10=10")
+    # postProcess("5|5=1")
+    # postProcess("5/5=1")
+    # postProcess("1+2")
+    postProcess("2*2/8")
+    postProcess("2*2|8")

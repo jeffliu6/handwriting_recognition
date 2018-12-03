@@ -27,7 +27,9 @@ def classify(img):
     ret_str = ""
     for m in model.predict_classes(img): 
         c = LABELS[m]
-        if c == "div" or c == "forward_slash":
+        if c == "div":
+            c = "|"
+        elif c == "forward_slash":
             c =  "/"
         elif c == "times":
             c = "*"  
