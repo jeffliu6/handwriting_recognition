@@ -2,20 +2,25 @@ import math
 import constants
 import pprint
 import __future__
+import wolframalpa
+import re
 
 """[evalResult(string_rep)] is the string result of the mathematical evaluation of [string_rep].
 Returns None on an invalid or malformed [string_rep]. """
 def evalResult(string_rep): 
     def evaluate(e):
         return eval(compile(e, '<string>', 'eval', __future__.division.compiler_flag))
+    client = wolframalpha.Client("LLA9WY-Q4734L5HH7")
     try: 
         string_rep = string_rep.replace("|","/")
-        if "=" in string_rep: 
-            string_rep = string_rep.split("=")
-            left = evaluate(string_rep[0])
-            right = evaluate(string_rep[1])
-            return left == right
-        return evaluate(string_rep)
+        # if "=" in string_rep: 
+        #     string_rep = string_rep.split("=")
+        #     left = evaluate(string_rep[0])
+        #     right = evaluate(string_rep[1])
+        #     return left == right
+        # return evaluate(string_rep)
+        res = client.query(string_rep)
+        return next(res.results).text
     except: 
         return None
 
