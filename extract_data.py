@@ -29,19 +29,20 @@ def from_dir(dir):
     training_labels = np.empty((0,1), int)
     test_data = np.empty((0, 45, 45), int)
     test_labels = np.empty((0,1), int)
-  
+
     # iterate through each sub-directory
     if isdir(dir):
         chars_dir = [f for f in listdir(dir) if not f.startswith('.')]# if isdir(join(dir, f))]
         for dirs in chars_dir:
-            if dirs in labels:
+            if dirs in LABELS.values():
                 new_train_matrix, new_train_labels, new_test_matrix, new_test_labels = grab_imgs(join(dir, dirs), dirs)
                 training_data = np.append(training_data, new_train_matrix, axis=0)
                 training_labels = np.append(training_labels, new_train_labels)
                 test_data = np.append(test_data, new_test_matrix, axis=0)
                 test_labels = np.append(test_labels, new_test_labels)
                 print("{} completed with {} in training and {} in test".format(dirs, len(training_labels), len(test_labels)))
-
+            else:
+                print(dirs)
 
     return training_data, training_labels, test_data, test_labels
 
