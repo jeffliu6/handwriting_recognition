@@ -35,7 +35,7 @@ def from_dir(dir):
         chars_dir = [f for f in listdir(dir) if not f.startswith('.')]# if isdir(join(dir, f))]
         for dirs in chars_dir:
             if dirs in LABELS.values():
-                new_train_matrix, new_train_labels, new_test_matrix, new_test_labels = grab_imgs(join(dir, dirs), dirs)
+                new_train_matrix, new_train_labels, new_test_matrix, new_test_labels = grab_imgs(join(dir, dirs), ENCODING[dirs])
                 training_data = np.append(training_data, new_train_matrix, axis=0)
                 training_labels = np.append(training_labels, new_train_labels)
                 test_data = np.append(test_data, new_test_matrix, axis=0)
