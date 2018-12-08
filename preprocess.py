@@ -46,7 +46,7 @@ def process_image (file):
     img = cv2.bitwise_not(img,img)
 
     #Add border in case that text is against an edge of the picture
-    img = cv2.copyMakeBorder(img,top=10,bottom=10,left=20,right=10,borderType = cv2.BORDER_CONSTANT,value=[0,0,0])
+    img = cv2.copyMakeBorder(img,top=10,bottom=10,left=10,right=10,borderType = cv2.BORDER_CONSTANT,value=[0,0,0])
     img = horizontal_dilation (img)
     img = np.ascontiguousarray(img, dtype=np.uint8)
 
@@ -79,9 +79,9 @@ def process_image (file):
         [x,y,w,h] = cv2.boundingRect(contour)
 
         #Significant contours only
-        if h>30:
+        if h>10:
             cv2.rectangle(img_dilated,(x,y),(x+w,y+h),(100,100,100),1)
-            if np.sum(undilated_image[y:y+h,x:x+w] >100) > 3000:
+            if np.sum(undilated_image[y:y+h,x:x+w] >100) > 2000:
                 cropped = undilated_image[y:y+h,x:x+w]
                 characters.append(cropped)  
 
@@ -100,4 +100,4 @@ def process_image (file):
     return characters
 
 if __name__ == "__main__":
-    characters = process_image("equation8.jpg")
+    characters = process_image("equation1.jpg")
