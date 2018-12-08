@@ -22,7 +22,8 @@ if __name__ == "__main__":
         if os.path.isfile(path): 
             img = preprocessor.process_image(path)
             str_rep = classifier.classify(img)
-            result = postprocessor.postProcess(str_rep)
+            expr_result, latex_rep = postprocessor.postProcess(str_rep)
+            print("Result: %s\nLatex Representation: %s\n" % (expr_result, latex_rep))
         else:
             print("Invalid path.")
         
