@@ -9,11 +9,15 @@ import cv2
 # dir is the path to the folder, n is the #/character the folder represents
 def grab_imgs(dir, n):
     size = len(listdir(dir))
+    max_size = 3000
+    size = min(max_size, size)
     total_array = np.zeros((size, 45, 45))
     labels_vector = np.full((size, 1), n)
 
     ind = 0
     for f in listdir(dir):
+        if(ind==max_size):
+            break
         img = cv2.imread(join(dir, f), flags=cv2.IMREAD_GRAYSCALE)
         total_array[ind,:,:] = img
         ind += 1
@@ -35,7 +39,7 @@ def from_dir(dir):
         chars_dir = [f for f in listdir(dir) if not f.startswith('.')]# if isdir(join(dir, f))]
         for dirs in chars_dir:
             if dirs in LABELS.values():
-                new_train_matrix, new_train_labels, new_test_matrix, new_test_labels = grab_imgs(join(dir, dirs), dirs)
+                new_train_matrix, new_train_labels, new_test_matrix, new_test_labels = grab_imgs(join(dir, dirs), ENCODING[dirs])
                 training_data = np.append(training_data, new_train_matrix, axis=0)
                 training_labels = np.append(training_labels, new_train_labels)
                 test_data = np.append(test_data, new_test_matrix, axis=0)

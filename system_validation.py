@@ -13,7 +13,7 @@ if __name__ == "__main__":
         with open(c.PATH_TO_VDATA + files[1]) as f:
             expected_data = f.read().splitlines()
         success = []
-        failure = [] 
+        failure = []
         assert(len(files[2:]) == len(expected_data))
         for idx,vd_img in enumerate(files[2:]):
             expected = expected_data[idx].split(",")
@@ -24,16 +24,16 @@ if __name__ == "__main__":
             elif result[0] == expected[0] and result[1] == expected[1]:
                 success.append(vd_img)
             else:
-                failure.append((vd_img,"Expected: "+str(expected)+" but got " +str(result))) 
-        if(len(success) == 00):
+                failure.append((vd_img,"Expected: "+str(expected)+" but got " +str(result)))
+        if(len(success) == 0):
             succ_rate = "0.0"
-        else: 
+        else:
             succ_rate = str(float(float(len(success))/(float(len(failure)) + float(len(success)))))
-        print("Success rate: "+ succ_rate) 
+        print("Success rate: "+ succ_rate)
         print("The following validation images failed: ")
         for f in failure:
             print(f[0]+": "+str(f[1]))
-         
-    else:
-        print("Bad path to validation data")
-    
+
+else:
+    print("Bad path to validation data")
+
