@@ -21,16 +21,16 @@ def classify(img):
     json_file.close()
     model = model_from_json(model_json)
     model.load_weights("model.h5")
-    model.compile(loss=keras.losses.categorical_crossentropy,
+    model.compile(loss=keras.losses.sparse_categorical_crossentropy,
               optimizer=keras.optimizers.Adadelta(),
               metrics=['accuracy'])   
     ret_str = ""
     for m in model.predict_classes(img): 
         c = LABELS[m]
         if c == "div":
-            c = "|"
-        elif c == "forward_slash":
-            c =  "/"
+            c = "/"
+        elif c == "k":
+            c =  "E"
         elif c == "times":
             c = "*"  
         ret_str += str(c)

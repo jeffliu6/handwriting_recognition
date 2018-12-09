@@ -13,9 +13,11 @@ def evalResult(string_rep):
         return eval(compile(e, '<string>', 'eval', __future__.division.compiler_flag))
 
     client = wolframalpha.Client(constants.APP_ID)
-    try: 
-        string_rep = string_rep.replace('|','/')
-        res = client.query(string_rep)
+    try:
+        if "A" in string_rep:
+            res = client.query(string_rep+" Solve for A")
+        else:
+            res = client.query(string_rep)
         return next(res.results).text
     except: 
         return "Bad Wolfram Query: "+string_rep
@@ -39,16 +41,13 @@ def toLatex(string_rep):
     t = 0
     while t < len(tokens):
         if tokens[t] == "/":
-            latex_rep = r"\frac{"+latex_rep+"}{"+tokens[t+1]+"}"
-            t += 2
-        elif tokens[t] == "|":
            latex_rep = "\div{"+latex_rep+"}{"+tokens[t+1]+"}"
            t += 2
-        elif tokens[t] == "^":
+        elif tokens[t] == "E":
            latex_rep = latex_rep+ "^{"+tokens[t+1]+"}"
            t += 2
         elif tokens[t] == "*":
-            latex_rep += "\cdot"
+            latex_rep += r"\times "
             t += 1
         else:
             latex_rep += tokens[t]
